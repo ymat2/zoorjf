@@ -1,0 +1,15 @@
+
+### ignore all ###
+/*
+/.**
+
+### except following files ###
+!/.gitignore
+!/src/
+!/src/**
+!/rstats/
+!/rstats/**
+
+### ignore
+__pycache__
+.Rproj.user
