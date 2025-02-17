@@ -1,12 +1,12 @@
 #$ -S /bin/bash
 #$ -cwd
-#$ -t 1-8:1
+#$ -t 1-10:1
 #$ -l mem_req=63G
 #$ -l s_vmem=63G
 #$ -o /dev/null
 #$ -e /dev/null
 
-seq_ids=(1 2 3 4 5 6 7 8)
+seq_ids=(1 2 3 4 5 6 7 8 9 10)
 seq_id=${seq_ids[$SGE_TASK_ID-1]}
 
 shopt -s expand_aliases

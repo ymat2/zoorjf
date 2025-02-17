@@ -5,7 +5,7 @@
 
 
 shopt -s expand_aliases
-alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b4--0 plink"
+alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 plink"
 alias bcftools="apptainer exec /usr/local/biotools/b/bcftools:1.18--h8b25389_0 bcftools"
 alias treemix="apptainer exec /usr/local/biotools/t/treemix:1.13--h125836d_9 treemix"
 
@@ -19,7 +19,7 @@ cd ${workdir}
 
 ## Make .clust file
 
-#bcftools query -l ${vcf} | awk '{print $1 "\t" $1 "\tEdit"}' >> RJF.clust
+bcftools query -l ${vcf} | awk '{print $1 "\t" $1 "\tEdit"}' >> RJF.clust
 # Need to be edited
 
 awk '{print $3}' RJF.clust | sort | uniq > treemix.list
@@ -41,7 +41,6 @@ plink1 --bfile ${bfile} \
 python3 ../src/plink2treemix.py -i ${prefix}.frq.strat -o ${prefix}.treemix.frq
 rm ${prefix}.*miss ${prefix}.frq.strat ${prefix}.nosex
 gzip ${prefix}.treemix.frq
-
 
 for m in {1..8}; do
   for i in {1..5}; do

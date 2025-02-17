@@ -8,7 +8,7 @@
 
 
 shopt -s expand_aliases
-alias plink2="apptainer exec /usr/local/biotools/p/plink2:2.00a5--h4ac6f70_0 plink2"
+alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 plink"
 alias rapidnj="apptainer exec /usr/local/biotools/r/rapidnj:2.3.2--h4ac6f70_4 rapidnj"
 
 workdir=~/RJF/phylo/
@@ -18,7 +18,7 @@ prefix=RJF.sub
 [ ! -e ${workdir} ] && mkdir -p ${workdir}
 cd ${workdir}
 
-plink2 --vcf ${vcf} \
+plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
   --set-missing-var-ids @:# \
@@ -27,12 +27,12 @@ plink2 --vcf ${vcf} \
   --indep-pairwise 50 10 0.2 \
   --out ${prefix}
 
-plink2 --vcf ${vcf} \
+plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
   --set-missing-var-ids @:# \
   --extract ${prefix}.prune.in \
-  --export vcf id-paste=iid \
+  --recode vcf-iid \
   --out ${prefix}
 
 /usr/bin/python3 ~/bin/vcf2phylip/vcf2phylip.py -i ${prefix}.vcf
