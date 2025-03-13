@@ -1,13 +1,11 @@
-#$ -S /bin/bash
-#$ -cwd
-#$ -t 1-16
-#$ -l s_vmem=63G
-#$ -l mem_req=63G
-#$ -o /dev/null
-#$ -e /dev/null
+#!/bin/bash
 
-samples=($(ls bam | sort -V))
-sample=${samples[$SGE_TASK_ID-1]}
+#SBATCH -t 1-9
+#SBATCH --mem 64G
+
+#samples=($(ls bam | sort -V))
+samples=($(ls clean | awk -F '_clean' '{print $1}' | sort | uniq | grep -E "HoU|TM"))
+sample=${samples[$SLURM_ARRAY_TASK_ID-1]}
 reference=~/ref/grcg7b/GCF_016699485.2.fa
 
 shopt -s expand_aliases

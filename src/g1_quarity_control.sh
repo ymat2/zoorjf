@@ -1,17 +1,13 @@
-#$ -S /bin/bash
-#$ -cwd
-#$ -t 1-7
-#$ -l s_vmem=63G
-#$ -l mem_req=63G
-#$ -o /dev/null
-#$ -e /dev/null
+#!/bin/bash
 
+#SBATCH -a 1-9
+#SBATCH --mem 32G
 
 proj=~/RJF
 raw_data=${proj}/uncleaned
 clean_data=${proj}/clean
 samples=($(ls ${raw_data}))
-sample=${samples[$SGE_TASK_ID-1]}
+sample=${samples[$SLURM_ARRAY_TASK_ID-1]}
 
 shopt -s expand_aliases
 alias fastp="apptainer exec /usr/local/biotools/f/fastp:0.23.4--h5f740d0_0 fastp"

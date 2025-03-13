@@ -1,14 +1,11 @@
-#$ -S /bin/bash
-#$ -cwd
-#$ -t 1-16:1
-#$ -l s_vmem=16G
-#$ -l mem_req=16G
-#$ -o /dev/null
-#$ -e /dev/null
+#!/bin/bash
 
+#SBATCH -a 1-9
+#SBATCH --mem 16G
 
-samples=($(awk -F '\t' 'NR>1 {print $1}' data/sra_accession_add.tsv))
-sample=${samples[$SGE_TASK_ID-1]}
+#samples=($(awk -F '\t' 'NR>1 {print $1}' data/sra_accession_add.tsv))
+samples=($(ls clean | awk -F '_clean' '{print $1}' | sort | uniq | grep -E "HoU|TM"))
+sample=${samples[$SLURM_ARRAY_TASK_ID-1]}
 reference=~/ref/grcg7b/GCF_016699485.2.fa
 
 shopt -s expand_aliases
@@ -22,7 +19,7 @@ bwa mem -t 4 -M ${reference} clean/${sample}_clean_1.fq.gz clean/${sample}_clean
 samtools collate -Ou bam/${sample}/${sample}.bam | \
   samtools fixmate - - -mu | \
   samtools sort - -u | \
-  samtools markdup - bam/${sample}/${sample}.cfsm.bam
+  samtools markdup - -r bam/${sample}/${sample}.cfsm.bam
 samtools index bam/${sample}/${sample}.cfsm.bam
 
 samtools flagstat -O tsv bam/${sample}/${sample}.bam > bam/${sample}/${sample}.stat

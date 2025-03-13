@@ -1,14 +1,13 @@
-#$ -S /bin/bash
-#$ -cwd
-#$ -t 1-16:1
-#$ -l s_vmem=32G
-#$ -l mem_req=32G
-#$ -o /dev/null
-#$ -e /dev/null
+#!/bin/bash
+
+#SBATCH -a 1-16
+#SBATCH --mem 32G
+#SBATCH -o /dev/null
+#SBATCH -e /dev/null
 
 
 sras=($(awk -F '\t' 'NR>1 {print $1}' data/sra_accession.tsv))
-sra=${sras[$SGE_TASK_ID-1]}
+sra=${sras[$SLURM_ARRAY_TASK_ID-1]}
 
 workdir=~/RJF/sra
 uncleaned=~/RJF/uncleaned/

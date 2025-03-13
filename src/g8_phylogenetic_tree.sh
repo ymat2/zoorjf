@@ -1,11 +1,7 @@
-#$ -S /bin/bash
-#$ -cwd
-#$ -l medium
-#$ -l mem_req=512G
-#$ -l s_vmem=512G
-#$ -o /dev/null
-#$ -e /dev/null
+#!/bin/bash
 
+#SBATCH -o /dev/null
+#SBATCH -e /dev/null
 
 shopt -s expand_aliases
 alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 plink"

@@ -1,19 +1,19 @@
-#$ -S /bin/bash
-#$ -cwd
-#$ -l s_vmem=16G
-#$ -l mem_req=16G
-#$ -o /dev/null
-#$ -e /dev/null
+#!/bin/bash
 
+#SBATCH --mem 16G
+#SBATCH -o /dev/null
+#SBATCH -e /dev/null
 
 # raw_data1=~/raw_data/RJF_ABRC
 raw_data2=~/raw_data/RJF_KMT
 raw_data3=~/raw_data/RJF_iZoo
+raw_data4=~/raw_data/RJF_TM
+raw_data5=~/raw_data/RJF_MRYM
 proj=~/RJF
 
 cd ${proj}
 
-for d in ${raw_data2} ${raw_data3}; do
+for d in ${raw_data4} ${raw_data5}; do
   samples=($(ls ${d}))
   for sample in ${samples[@]}; do
     [ ! -e uncleaned/${sample} ] && mkdir -p uncleaned/${sample}
