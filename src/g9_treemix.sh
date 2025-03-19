@@ -16,19 +16,15 @@ prefix=RJF.sub
 [ ! -e ${workdir} ] && mkdir -p ${workdir}
 cd ${workdir}
 
-## Make .clust file
-
-bcftools query -l ${vcf} | awk '{print $1 "\t" $1 "\tEdit"}' >> RJF.clust
-# Need to be edited
-
-awk '{print $3}' RJF.clust | sort | uniq > treemix.list
+## Make .clust file: make_treemix_clust.R
+awk '{print $3}' treemix.clust | sort | uniq > treemix.list
 
 ## Make Treemix input file
 
 plink1 --bfile ${bfile} \
   --freq \
   --missing \
-  --within RJF.clust \
+  --within treemix.clust \
   --not-chr NC_052571.1, NC_052572.1, NC_053523.1 \
   --allow-extra-chr \
   --double-id \
@@ -44,6 +40,6 @@ gzip ${prefix}.treemix.frq
 for m in {1..8}; do
   for i in {1..5}; do
     echo Running Treemix: M=${m}, iteration=${i} ...
-    treemix -i ${prefix}.treemix.frq.gz -m ${m} -o treemix.${i}.${m} -root Bankiva -bootstrap -k 500 -seed ${i} > treemix_${i}.${m}_log
+    treemix -i ${prefix}.treemix.frq.gz -m ${m} -o treemix.${i}.${m} -root bankiva -bootstrap -k 500 -seed ${i} > treemix_${i}.${m}_log
   done
 done

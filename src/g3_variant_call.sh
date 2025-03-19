@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#SBATCH -t 1-9
+#SBATCH -a 1-139
 #SBATCH --mem 64G
 
-#samples=($(ls bam | sort -V))
-samples=($(ls clean | awk -F '_clean' '{print $1}' | sort | uniq | grep -E "HoU|TM"))
+samples=($(ls bam | sort -V))
+samples=(TMP1280F TMP1293F)
 sample=${samples[$SLURM_ARRAY_TASK_ID-1]}
 reference=~/ref/grcg7b/GCF_016699485.2.fa
 

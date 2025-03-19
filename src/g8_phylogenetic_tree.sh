@@ -20,7 +20,7 @@ plink1 --vcf ${vcf} \
   --set-missing-var-ids @:# \
   --maf 0.01 \
   --not-chr NC_052571.1, NC_052572.1, NC_053523.1 \
-  --indep-pairwise 50 10 0.2 \
+  --indep-pairwise 150 50 0.2 \
   --out ${prefix}
 
 plink1 --vcf ${vcf} \
