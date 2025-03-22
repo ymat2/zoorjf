@@ -14,6 +14,11 @@ cd ${workdir}
 
 plink1 --bfile ${prefix} --pca --allow-extra-chr --double-id --out ${prefix}.pca
 
-sed -i -e 's/NW_//g' ${prefix}.bim
-sed -i -e 's/NC_//g' ${prefix}.bim
-sed -i -e 's/\.1//g' ${prefix}.bim
+# For ADMIXTURE
+[ ! -e ~/RJF/admixture ] && mkdir ~/RJF/admixture
+cp ${prefix}.bim ~/RJF/admixture/
+cp ${prefix}.bed ~/RJF/admixture/
+cp ${prefix}.fam ~/RJF/admixture/
+sed -i -e 's/NW_//g' ~/RJF/admixture/${prefix}.bim
+sed -i -e 's/NC_//g' ~/RJF/admixture/${prefix}.bim
+sed -i -e 's/\.1//g' ~/RJF/admixture/${prefix}.bim

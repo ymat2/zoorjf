@@ -11,7 +11,7 @@ seq_id=${seq_ids[$SLURM_ARRAY_TASK_ID-1]}
 shopt -s expand_aliases
 alias admixture="apptainer exec /usr/local/biotools/a/admixture:1.3.0--0 admixture"
 
-workdir=~/RJF/structure
+workdir=~/RJF/admixture
 prefix=RJF.snp
 
 [ ! -e ${workdir} ] && mkdir ${workdir}
