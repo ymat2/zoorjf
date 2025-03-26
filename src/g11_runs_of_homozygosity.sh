@@ -8,8 +8,10 @@ alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 p
 
 proj=~/RJF
 workdir=${proj}/roh
-snponly=${proj}/vcf/RJF.snp.vcf.gz
+vcf=${proj}/vcf/RJF.snp.vcf.gz
 prefix=RJF.snp
+maf=0.01
+geno=0.1
 
 [ ! -e ${workdir} ] && mkdir ${workdir}
 cd ${workdir}
@@ -17,25 +19,9 @@ cd ${workdir}
 plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
-  --set-missing-var-ids @:# \
-  --maf 0.01 \
-  --not-chr NC_053523.1 \
-  --indep-pairwise 150 50 0.2 \
-  --out ${prefix}
-
-plink1 --vcf ${vcf} \
-  --allow-extra-chr \
-  --double-id \
-  --set-missing-var-ids @:# \
-  --extract ${prefix}.prune.in \
-  --make-bed \
-  --out ${prefix}
-
-rm ${prefix}.prune.in ${prefix}.prune.out
-
-plink1 --bfile ${prefix} \
-  --allow-extra-chr \
-  --double-id \
+  --geno ${gneo} \
+  --maf ${maf} \
+  --not-chr NC_052571.1, NC_052572.1, NC_053523.1 \
   --set-missing-var-ids @:# \
   --homozyg-snp 50 \
   --homozyg-window-snp 50 \
@@ -46,3 +32,13 @@ plink1 --bfile ${prefix} \
   --homozyg-gap 1000 \
   --homozyg-window-threshold 0.05 \
   --out ${prefix}.roh
+
+plink1 --vcf ${vcf} \
+  --allow-extra-chr \
+  --double-id \
+  --geno ${gneo} \
+  --maf ${maf} \
+  --het \
+  --not-chr NC_052571.1, NC_052572.1, NC_053523.1 \
+  --set-missing-var-ids @:# \
+  --out ${prefix}
