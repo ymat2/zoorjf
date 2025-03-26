@@ -5,7 +5,6 @@
 
 shopt -s expand_aliases
 alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 plink"
-alias bcftools="apptainer exec /usr/local/biotools/b/bcftools:1.18--h8b25389_0 bcftools"
 alias treemix="apptainer exec /usr/local/biotools/t/treemix:1.13--h125836d_9 treemix"
 
 workdir=~/RJF/treemix

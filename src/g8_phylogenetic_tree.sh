@@ -19,6 +19,7 @@ plink1 --vcf ${vcf} \
   --double-id \
   --set-missing-var-ids @:# \
   --maf 0.01 \
+  --geno 0.1 \
   --not-chr NC_052571.1, NC_052572.1, NC_053523.1 \
   --indep-pairwise 150 50 0.2 \
   --out ${prefix}

@@ -24,6 +24,7 @@ plink1 --vcf ${snponly} \
   --double-id \
   --set-missing-var-ids @:# \
   --maf 0.01 \
+  --geno 0.1 \
   --indep-pairwise 150 50 0.2 \
   --out ${prefix}
 

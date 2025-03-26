@@ -12,10 +12,10 @@ workdir=${proj}/gscan
 
 [ ! -e ${workdir} ] && mkdir ${workdir}
 cd ${workdir}
-mkdir pi tajimasD het pop
+mkdir pi tajimasD pop
 
 ## Per individual heterozygosity
-vcftools --gzvcf ${vcf} --het --out het/RJF
+# vcftools --gzvcf ${vcf} --het --maf 0.01 --max-missing 0.1 --out het/RJF
 
 ## make population text
 for pop in $(cat ../treemix/treemix.list); do
