@@ -38,7 +38,7 @@ plink1 --vcf ${vcf} \
 plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
-  --geno ${gneo} \
+  --geno 0 \
   --maf ${maf} \
   --het \
   --not-chr NC_052571.1, NC_052572.1, NC_053523.1 \
