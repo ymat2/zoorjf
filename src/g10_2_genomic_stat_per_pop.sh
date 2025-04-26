@@ -18,11 +18,8 @@ pops=($(cat ../treemix/treemix.list))
 pop=${pops[$SLURM_ARRAY_TASK_ID-1]}
 
 ## make population text
-echo ${pop}
 cat ../treemix/treemix.clust | grep ${pop} | awk '{ print $1 }' > pop/${pop}.txt
 
 ## Pi and Tajima's D
 vcftools --gzvcf ${vcf} --window-pi 50000 --keep pop/${pop}.txt --out pi/${pop}
 vcftools --gzvcf ${vcf} --TajimaD 50000 --keep pop/${pop}.txt --out tajimasD/${pop}
-
-echo Done!!
