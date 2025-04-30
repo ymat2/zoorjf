@@ -2,6 +2,7 @@
 
 #SBATCH -a 1-130
 #SBATCH --partition medium
+#SBATCH --nodelist m01,m03
 #SBATCH --mem 64G
 
 
