@@ -4,22 +4,17 @@
 #SBATCH -e /dev/null
 
 shopt -s expand_aliases
-alias bcftools="apptainer exec /usr/local/biotools/b/bcftools:1.18--h8b25389_0 bcftools"
 alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 plink"
 
 proj=~/RJF
 workdir=${proj}/structure
-vcf=${proj}/vcf/RJF.vcf.gz
-snponly=${proj}/vcf/RJF.snp.vcf.gz
+vcf=${proj}/vcf/RJF.snp.vcf.gz
 prefix=RJF.snp
 
 [ ! -e ${workdir} ] && mkdir ${workdir}
 cd ${workdir}
 
-bcftools view -v snps -m2 -M2 -Oz ${vcf} > ${snponly}
-bcftools index ${snponly}
-
-plink1 --vcf ${snponly} \
+plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
   --set-missing-var-ids @:# \
@@ -28,7 +23,7 @@ plink1 --vcf ${snponly} \
   --indep-pairwise 150 50 0.2 \
   --out ${prefix}
 
-plink1 --vcf ${snponly} \
+plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
   --set-missing-var-ids @:# \
