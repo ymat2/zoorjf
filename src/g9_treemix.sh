@@ -39,6 +39,6 @@ gzip ${prefix}.treemix.frq
 for m in {1..8}; do
   for i in {1..5}; do
     echo Running Treemix: M=${m}, iteration=${i} ...
-    treemix -i ${prefix}.treemix.frq.gz -m ${m} -o treemix.${i}.${m} -root bankiva -bootstrap -k 500 -seed ${i} > treemix_${i}.${m}_log
+    treemix -i ${prefix}.treemix.frq.gz -m ${m} -o treemix.${i}.${m} -bootstrap -k 500 -seed ${i} > treemix_${i}.${m}_log
   done
 done

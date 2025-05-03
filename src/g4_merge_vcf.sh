@@ -15,7 +15,7 @@ poppy summary -i ~/RJF/bam -o ~/RJF/out/mapping_summary.tsv --mode bam --suffix 
 
 samples=($(ls ~/RJF/bam | sort -V))
 for s in ${samples[@]}; do echo ~/RJF/bam/$s/$s.q.vcf.gz >> data/use_samples.txt ; done
-cat ~/RJF/out/mapping_summary.tsv | awk '{ if ($2 < 3 || $3 < 90) { print $1 }}' | sort
+cat ~/RJF/out/mapping_summary.tsv | awk '{ if ($2 < 3 || $3 < 90) { print $1 }}' | sort  # Average_depth<3 or coverage<90
 # edit data/use_samples.txt
 
 workdir=./vcf
@@ -32,4 +32,4 @@ bcftools view -v snps -m2 -M2 -Oz ${vcf} > ${snponly}
 bcftools index ${snponly}
 
 ## Basic statistics
-bcftools stats --depth 500,1000,1 -s - ${vcf} > out/RJF.vcf.stats
+bcftools stats --depth 0,1000,5 -s - ${vcf} > out/RJF.vcf.stats

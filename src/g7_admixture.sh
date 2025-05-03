@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH -a 1-10
-#SBATCH --mem 64G
+#SBATCH --mem 16G
 #SBATCH -o /dev/null
 #SBATCH -e /dev/null
 

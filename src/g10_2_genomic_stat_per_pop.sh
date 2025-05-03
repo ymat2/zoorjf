@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -a 1-17
+#SBATCH -a 1-16
 #SBATCH --time 60
 #SBATCH --partition short
 

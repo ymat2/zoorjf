@@ -5,7 +5,7 @@
 
 shopt -s expand_aliases
 alias plink1="apptainer exec /usr/local/biotools/p/plink:1.90b6.21--hec16e2b_4 plink"
-alias plink2="apptainer exec /usr/local/biotools/p/plink2:2.00a5--h4ac6f70_0 plink2"
+#alias plink2="apptainer exec /usr/local/biotools/p/plink2:2.00a5--h4ac6f70_0 plink2"
 
 proj=~/RJF
 workdir=${proj}/roh
@@ -17,6 +17,7 @@ geno=0.1
 [ ! -e ${workdir} ] && mkdir ${workdir}
 cd ${workdir}
 
+# roh
 plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
@@ -34,7 +35,7 @@ plink1 --vcf ${vcf} \
   --homozyg-window-threshold 0.05 \
   --out ${prefix}.roh
 
-
+# het
 plink1 --vcf ${vcf} \
   --allow-extra-chr \
   --double-id \
