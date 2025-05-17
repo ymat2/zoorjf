@@ -1,9 +1,7 @@
 #!/bin/bash
 
 #SBATCH -a 1-130
-#SBATCH --partition medium
-#SBATCH --nodelist m01,m03
-#SBATCH --mem 64G
+#SBATCH --mem 32G
 
 
 samples=($(ls bam | sort -V))
@@ -24,7 +22,7 @@ psmc fq2psmcfa -s 50 ${sample}/${sample}.consensus.fa.gz > ${sample}/${sample}.c
 psmc splitfa ${sample}/${sample}.consensus.psmcfa > ${sample}/${sample}.split.filtered.psmcfa
 rm ${sample}/${sample}.consensus.fa.gz ${sample}/${sample}.consensus.psmcfa
 
-psmc psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o ${sample}/${sample}.4.psmc ${sample}/${sample}.split.filtered.psmcfa
-psmc psmc -N25 -t15 -r5 -p "2+2+25*2+4+6" -o ${sample}/${sample}.22.psmc ${sample}/${sample}.split.filtered.psmcfa
+#psmc psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o ${sample}/${sample}.4.psmc ${sample}/${sample}.split.filtered.psmcfa
+#psmc psmc -N25 -t15 -r5 -p "2+2+25*2+4+6" -o ${sample}/${sample}.22.psmc ${sample}/${sample}.split.filtered.psmcfa
 psmc psmc -N25 -t15 -r5 -p "1+1+1+1+25*2+4+6" -o ${sample}/${sample}.1111.psmc ${sample}/${sample}.split.filtered.psmcfa
 rm ${sample}/${sample}.split.filtered.psmcfa
