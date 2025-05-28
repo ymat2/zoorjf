@@ -10,10 +10,13 @@ prefix=RJF.snp
 cd ${workdir}
 
 plink1 --bfile ${prefix} \
-  --pca header tabs \
+  --pca header tabs var-wts \
   --allow-extra-chr \
   --double-id \
   --out ${prefix}.pca
+
+cat ${prefix}.pca.eigenvec.var | awk '{print $2 "\t" $5}' > ${prefix}.pca.PC1.var
+rm ${prefix}.pca.eigenvec.var
 
 # For ADMIXTURE
 [ ! -e ~/RJF/admixture ] && mkdir ~/RJF/admixture
