@@ -9,6 +9,7 @@
 !/src/**
 !/rstats/
 !/rstats/**
+!/README.md
 
 ### ignore
 __pycache__
