@@ -38,4 +38,4 @@ Red junglefowl in zoological parks reveal how population bottlenecks shape the g
 
 ## Publication
 
-*in prep.*
+*submitted*
