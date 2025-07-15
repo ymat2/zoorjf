@@ -8,6 +8,58 @@ source("./rstats/common_settings.R")
 acc2chr = myrrr::grcg7b
 chr_levels = c(1:39, "W", "Z")
 
+
+## PCA -----
+
+colors2 = c(
+  "Guangxi" = "#ccebc5",
+  "Indonesia" = "#ccebc5",
+  "Yunnan" = "#ccebc5",
+  "Thailand" = "#ccebc5",
+  "Vietnam" = "#ccebc5",
+  "bankiva" = "#fbb4ae",
+  "gallus" = "#fbb4ae",
+  "jabouillei" = "#fbb4ae",
+  "spadiceus_China" = "#e41a1c",
+  "spadiceus_Thailand" = "#e41a1c",
+  "spadiceus_Singapore" = "#e41a1c",
+  "RJFizoo" = "#decbe4",
+  #"RJFabrc" = "#984ea3",
+  "RJFkmt" = "#984ea3",
+  "RJFtama" = "#984ea3",
+  "RJFmrym" = "#984ea3",
+  "LDH" = "#b3cde3",
+  "BLH" = "#b3cde3"
+)
+
+eigenvec = readr::read_tsv("out/pca/RJF.snp.pca.eigenvec") |>
+  dplyr::mutate(IID = stringr::str_split(IID, "/", simplify = TRUE)[,2]) |>
+  dplyr::select(!FID) |>
+  dplyr::left_join(sample2group, by = "IID") |>
+  dplyr::mutate(FID = forcats::fct_relevel(FID, names(colors)))
+
+eigenval = readr::read_csv("out/pca/RJF.snp.pca.eigenval", col_names = "V1")
+df = data.frame(pc = 1:nrow(eigenval), eigenval/sum(eigenval)*100)
+
+pca12 = ggplot(eigenvec) +
+  aes(PC1, PC2, color = FID, shape = FID) +
+  geom_point(size = 3, alpha = 0.9) +
+  #ggplot2::annotate("text", label = "3 zooRJF populations", x = .15, y = .15, color = "#984ea3") +
+  #ggplot2::annotate("text", label = "Wild RJF populations", x = 0, y = .15, color = "#e41a1c") +
+  ggplot2::annotate("segment", x = -.03, y = .05, xend = .12, yend = .08, color = "#333333", 
+                    arrow = arrow(length = unit(0.1, "inches"), ends = "both")) +
+  ggplot2::annotate("text", label = expression(paste({italic("F")["ST"]})), x = .05, y = .05, color = "#333333", size = 5) +
+  scale_color_manual(values = colors2, labels = labels) +
+  scale_shape_manual(values = shapes, labels = labels) +
+  labs(
+    x = paste0("PC1 (", round(df[1,2], digits = 2), "%)"),
+    y = paste0("PC2 (", round(df[2,2], digits = 2), "%)"),
+    color = "Population", shape = "Population"
+  ) +
+  theme_test(base_size = 14)
+pca12
+
+
 ## fst -----
 fst = readr::read_tsv("out/fst/zoo_vs_spadiceus.windowed.weir.fst") |>
   dplyr::full_join(acc2chr, by = "CHROM") |>
@@ -64,7 +116,7 @@ fst01_genes = fst_tajimaD |>
   myrrr::annotate(seqnames = "CHROM", start = "BIN_START", end = "BIN_END") |>
   dplyr::filter(!is.na(gene) & !stringr::str_detect(gene, "^LOC|orf")) |>
   dplyr::distinct(gene, .keep_all = TRUE) |>
-  dplyr::filter(gene=="TSHR" | TajimaD < .tajima_low | TajimaD > .tajima_up)
+  dplyr::filter(TajimaD < .tajima_low | TajimaD > .tajima_up)
 
 pf2D = ggplot(fst_tajimaD) +
   aes(x = TajimaD, y = MEAN_FST) +
@@ -76,85 +128,17 @@ pf2D = ggplot(fst_tajimaD) +
   ggrepel::geom_label_repel(data = fst01_genes, aes(label = gene)) +
   labs(x = expression(paste("Tajima's ", italic("D"))), y = expression(paste({italic("F")["ST"]}))) +
   scale_color_manual(values = c("1" = "#333333", "0" = "#DDDDDD")) +
-  theme_bw(base_size = 14) +
+  theme_test(base_size = 14) +
   theme(legend.position = "none")
 pf2D
 
 
-## TSHR genotyping -----
-
-tshr_vcf = readr::read_tsv("out/TSHR.annot.vcf", comment = "##") |>
-  tidyr::pivot_longer(10:130, names_to = "IID", values_to = "GT") |>
-  dplyr::mutate(
-    IID = stringr::str_split(IID, "\\/", simplify = TRUE)[,2],
-    GT = stringr::str_split(GT, ":", simplify = TRUE)[,1],
-    AC = dplyr::if_else(GT == "./.", 0, 2),
-    VAR = stringr::str_extract(INFO, "p\\.\\w{3}\\d+\\w{3}")
-  ) |>
-  dplyr::mutate(
-    AC_ALT = dplyr::case_when(
-      GT == "1/1" ~ 2,
-      GT == "0/1" ~ 1,
-      .default = 0
-    )) |>
-  dplyr::select(`#CHROM`, POS, REF, ALT, IID, GT, AC, AC_ALT, VAR) |>
-  dplyr::left_join(sample2group, by = "IID")
-
-.label_order = c(
-  "GGb", "GGg", "GGj", "GGs (China)", "GGs (Thailand)", "GGs (Singapore)",
-  "RJF (izoo)", "RJF (Tama)", "RJF (Maruyama)", "RJF (Kumamoto)",
-  "Vietnam", "Thailand", "China (Yunnan)", "China (Guangxi)", "Indonesia",
-  "WL", "RIR"
-)
-
-tshr_af_arg558gly = tshr_vcf |>
-  dplyr::group_by(FID, POS) |>
-  summarise(AC = sum(AC), ACalt = sum(AC_ALT)) |>
-  dplyr::mutate(
-    AF = ACalt/AC, 
-    POS = forcats::as_factor(POS), 
-    FID = forcats::fct_relevel(FID, names(colors))
-  ) |>
-  dplyr::left_join(tshr_vcf |> 
-                     dplyr::distinct(POS, REF, ALT, VAR) |>
-                     dplyr::mutate(POS = forcats::as_factor(POS)), 
-                   by = "POS") |>
-  dplyr::filter(VAR == "p.Arg558Gly") |>
-  dplyr::mutate(FID = labels[FID] |> unname() |> forcats::as_factor()) |>
-  dplyr::mutate(FID = forcats::fct_relevel(FID, .label_order) |> forcats::fct_rev()) |>
-  print()
-
-a558g = ggplot(tshr_af_arg558gly) +
-  aes(x = POS, y = FID) +
-  geom_tile(aes(fill = AF)) +
-  scale_fill_viridis_c(
-    option = "E",
-    breaks = c(0, .5, 1),
-    labels = c("0.0 (Domestic)", "0.5", "1.0 (Wild)")
-  ) +
-  labs(
-    x = "TSHR - Gly558Arg",
-    fill = "Allele Frequency"
-  ) +
-  theme_test(base_size = 14) +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank()
-  )
-a558g
-
-
 ## cowplot -----
 
-.pab = cowplot::plot_grid(
-  pfst, ptd, nrow = 2, align = "v", axis = "rl",
-  labels = c("a", "b", ""), label_size = 20
-  )
-.pcd = cowplot::plot_grid(
-  pf2D, a558g, ncol = 2, rel_widths = c(2.4, 1), 
-  labels = c("c", "d"), label_size = 20
-  )
-p = cowplot::plot_grid(.pab, .pcd, nrow = 2)
+.pad = cowplot::plot_grid(
+  pca12, pf2D, ncol = 2, align = "h", axis = "tb",
+  labels = c("a", "d"), label_size = 20
+)
+p = cowplot::plot_grid(.pad, pfst, ptd, nrow = 3, rel_heights = c(2, 1, 1), labels = c("", "b", "c"), label_size = 20)
 p
-ggsave("images/figure5.png", p, h = 10, w = 12)
+ggsave("images/figureS1.png", p, h = 10.5, w = 14)
