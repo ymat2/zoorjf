@@ -1,8 +1,7 @@
 # Codes for Matsuda *et al.*
 
 In this repository you find codes used in Matsuda *et al.*
-Red junglefowl in zoological parks reveal how population bottlenecks shape the genomes of captive animals.
-
+Genomic origin and consequence of captive Red junglefowl in zoological parks.
 
 ## Requirements
 
