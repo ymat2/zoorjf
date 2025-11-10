@@ -37,4 +37,4 @@ Genomic origin and consequence of captive Red junglefowl in zoological parks.
 
 ## Publication
 
-*submitted*
+*under review*
