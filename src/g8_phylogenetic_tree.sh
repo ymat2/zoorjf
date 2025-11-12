@@ -32,7 +32,7 @@ plink1 --vcf ${vcf} \
   --recode vcf-iid \
   --out ${prefix}
 
-/usr/bin/python3 ~/bin/vcf2phylip/vcf2phylip.py -i ${prefix}.vcf
+/usr/bin/python3 ~/scripts/vcf2phylip/vcf2phylip.py -i ${prefix}.vcf
 rm ${prefix}.vcf* ${prefix}.prune*
 
 poppy alnkit --mode trim -i ${prefix}.min4.phy -o ${prefix}.varsites.fa --format fasta
