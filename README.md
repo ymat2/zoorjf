@@ -37,4 +37,8 @@ Genomic origin and consequence of captive Red junglefowl in zoological parks.
 
 ## Publication
 
-*under review*
+Yuki Matsuda, Masaki Eda, Shuichi Ito, Tsuyoshi Shimmura (2025) 
+Genomic origin and consequence of captive red junglefowl in zoological parks,
+*BMC Genomics*, *in press*. 
+https://doi.org/10.1186/s12864-025-12366-3
+
