@@ -1,7 +1,7 @@
-# Codes for Matsuda *et al.*
+# Codes for Matsuda *et al.* 2025
 
-In this repository you find codes used in Matsuda *et al.*
-Genomic origin and consequence of captive Red junglefowl in zoological parks.
+In this repository you find codes used in Matsuda *et al.* 2025
+[Genomic origin and consequence of captive Red junglefowl in zoological parks](https://doi.org/10.1186/s12864-025-12366-3).
 
 ## Requirements
 
