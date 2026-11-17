@@ -24,7 +24,7 @@ In this repository you find codes used in Matsuda *et al.* 2025
 - RapidNJ 2.3.2
 - Treemix 1.13
 - PSMC 0.6.5
-- [poppy](https://github.com/ymat2/poppy)
+- [poppy v0.0.9](https://github.com/ymat2/poppy/releases/tag/v0.0.9)
 
 ### R packages
 
